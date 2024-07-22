@@ -30,6 +30,22 @@ WORKDIR /
 RUN wget 'https://getcomposer.org/installer' -O 'composer-setup.php'
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
+WORKDIR /
+RUN dnf install -y automake autoconf
+RUN wget https://xdebug.org/files/xdebug-3.1.6.tgz
+RUN tar -xzvf xdebug-3.1.6.tgz
+WORKDIR /xdebug-3.1.6
+RUN phpize
+RUN ./configure
+RUN make
+RUN make install
+RUN echo 'zend_extension=xdebug' >> /usr/local/lib/php.ini
+RUN echo 'xdebug.mode=debug' >> /usr/local/lib/php.ini
+RUN echo 'xdebug.start_with_request=yes' >> /usr/local/lib/php.ini
+RUN echo 'xdebug.client_host=host.docker.internal' >> /usr/local/lib/php.ini
+RUN echo ';xdebug.discover_client_host=1' >> /usr/local/lib/php.ini
+RUN echo 'xdebug.client_port=9003' >> /usr/local/lib/php.ini
+
 WORKDIR /var/www
 
 CMD [ "php-fpm" ]
