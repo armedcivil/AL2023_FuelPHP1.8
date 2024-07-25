@@ -38,7 +38,7 @@ WORKDIR /xdebug-3.1.6
 RUN phpize
 RUN ./configure
 RUN make
-RUN make install
+RUN cp modules/xdebug.so /usr/local/lib/php/extensions/no-debug-non-zts-20180731/
 RUN echo 'zend_extension=xdebug' >> /usr/local/lib/php.ini
 RUN echo 'xdebug.mode=debug' >> /usr/local/lib/php.ini
 RUN echo 'xdebug.start_with_request=yes' >> /usr/local/lib/php.ini
